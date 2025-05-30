@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 11:49:51 by imatouil          #+#    #+#             */
-/*   Updated: 2025/05/30 11:49:52 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/05/30 13:08:04 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "./ft_libft/libft.h"
+
+// typedef enum s_builts {
+// 	echo,
+// 	cd,
+// 	pwd,
+// 	export,
+// 	unset,
+// 	env,
+// 	exit,
+// }	t_builts;
 
 typedef enum e_token_type {
 	TOKEN_WORD,			// Regular command/argument
@@ -64,5 +74,6 @@ int			commands(t_ms	*head);
 t_command	*mk_command(t_ms *head, t_command *prev);
 void		ft_executing(t_command	*commands,char **env);
 void		reset_signals(void);
+void	builts_in(t_command *commands);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 11:49:44 by imatouil          #+#    #+#             */
-/*   Updated: 2025/05/30 11:49:45 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/05/30 16:40:44 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_executing(t_command	*commands,char **env)
 	pid = fork();
 	if (pid == 0)
 	{
+		builts_in(commands);
 		if (commands->redirections)
 		{
 			if (!setup_redirections(commands->redirections))
