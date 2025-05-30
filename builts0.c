@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:53:17 by imatouil          #+#    #+#             */
-/*   Updated: 2025/05/30 19:21:30 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/05/30 21:46:13 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	ft_echo(t_command *commands)
 	int	newline;
 
 	newline = 0;
-	i = 1;
 	key = 0;
+	i = 1;
 	while (commands->args[1][++i])
 	{
 		if (commands->args[1][i] != 'n')
@@ -44,9 +44,42 @@ void	ft_echo(t_command *commands)
 	exit(0);
 }
 
+void	ft_pwd()
+{
+	char	*buffer;
+	char	*pwd;
+	
+	buffer = malloc(1024);
+	if (!buffer)
+	{
+		perror("error: ");
+		exit(1);
+	}
+	pwd = getcwd(buffer, 1024);
+	if (pwd)
+	{
+		printf("%s\n", pwd);
+	}
+	else
+		perror("pwd");
+	exit(0);
+}
+
 void	builts_in(t_command *commands)
 {
-	if (!ft_strncmp(commands->name, "echo", ft_strlen("echo")))
+	if (!ft_strncmp(commands->name, "echo", 4))
 		ft_echo(commands);
+	else if (!ft_strncmp(commands->name, "pwd", 3))
+		ft_pwd();
+	// else if (!ft_strncmp(commands->name, "cd", 2))
+	// 	ft_cd(commands);
+	// else if (!ft_strncmp(commands->name, "export", 6))
+	// 	ft_export(commands);
+	// else if (!ft_strncmp(commands->name, "unset", 5))
+	// 	ft_unset(commands);
+	// else if (!ft_strncmp(commands->name, "env", 3))
+	// 	ft_env(commands);
+	// else if (!ft_strncmp(commands->name, "exit", 4))
+	// 	ft_exit(commands);
 	printf("From Here\n");
 }
