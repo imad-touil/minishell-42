@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:53:17 by imatouil          #+#    #+#             */
-/*   Updated: 2025/05/30 21:46:13 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/05/31 11:18:00 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,25 @@ void	ft_echo(t_command *commands)
 	exit(0);
 }
 
+void	ft_cd(t_command *commands)
+{
+	int	tmp;
+
+	if (!commands->args[1])
+	{
+		tmp = chdir(getenv("HOME"));
+		if (tmp)
+			perror("Error: ");
+	}
+	else
+	{
+		tmp = chdir(commands->args[1]);
+		if (tmp)
+			perror("ffError: ");
+	}
+	exit(0);
+}
+
 void	ft_pwd()
 {
 	char	*buffer;
@@ -69,17 +88,17 @@ void	builts_in(t_command *commands)
 {
 	if (!ft_strncmp(commands->name, "echo", 4))
 		ft_echo(commands);
+	else if (!ft_strncmp(commands->name, "cd", 2)) //TODO solve the mistake 
+		ft_cd(commands);
 	else if (!ft_strncmp(commands->name, "pwd", 3))
 		ft_pwd();
-	// else if (!ft_strncmp(commands->name, "cd", 2))
-	// 	ft_cd(commands);
-	// else if (!ft_strncmp(commands->name, "export", 6))
-	// 	ft_export(commands);
+	else if (!ft_strncmp(commands->name, "export", 6))
+		ft_export(commands);
 	// else if (!ft_strncmp(commands->name, "unset", 5))
 	// 	ft_unset(commands);
 	// else if (!ft_strncmp(commands->name, "env", 3))
 	// 	ft_env(commands);
 	// else if (!ft_strncmp(commands->name, "exit", 4))
-	// 	ft_exit(commands);
+		// ft_exit(commands);
 	printf("From Here\n");
 }
