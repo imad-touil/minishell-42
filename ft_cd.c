@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/31 11:17:29 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/01 19:17:18 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/01 21:28:16 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/01 21:28:57 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_export(t_command *commands, char **env)
+int	ft_cd(t_command *commands)
 {
-	// char	*arg;
-	int		i;
+	int	tmp;
 
 	if (!commands->args[1])
 	{
-		i = -1;
-		while (env[++i])
-			printf("%s\n", env[i]);
+		printf("|   %s   |\n", getenv("HOME"));
+		tmp = chdir(getenv("HOME"));
+		if (tmp)
+			perror("cd: ");
 	}
+	else
+	{
+		tmp = chdir(commands->args[1]);
+		if (tmp)
+			perror("cd: ");
+	}
+	return (0);
 }

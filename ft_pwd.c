@@ -1,26 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_export.c                                        :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/31 11:17:29 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/01 19:17:18 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/01 21:30:20 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/01 21:30:32 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_export(t_command *commands, char **env)
+void	ft_pwd()
 {
-	// char	*arg;
-	int		i;
-
-	if (!commands->args[1])
+	char	*buffer;
+	char	*pwd;
+	
+	buffer = malloc(1024);
+	if (!buffer)
 	{
-		i = -1;
-		while (env[++i])
-			printf("%s\n", env[i]);
+		perror("error: ");
+		exit(1);
 	}
+	pwd = getcwd(buffer, 1024);
+	if (pwd)
+	{
+		printf("%s\n", pwd);
+	}
+	else
+		perror("pwd");
+	// exit(0);
 }
