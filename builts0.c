@@ -6,13 +6,13 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:53:17 by imatouil          #+#    #+#             */
-/*   Updated: 2025/05/31 11:18:00 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:28:41 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_echo(t_command *commands)
+int	ft_echo(t_command *commands)
 {
 	int	i;
 	int	key;
@@ -41,7 +41,7 @@ void	ft_echo(t_command *commands)
 	}
 	if (newline)
 		printf("\n");
-	exit(0);
+	return (0);
 }
 
 void	ft_cd(t_command *commands)
@@ -50,17 +50,17 @@ void	ft_cd(t_command *commands)
 
 	if (!commands->args[1])
 	{
+		printf("|   %s   |\n", getenv("HOME"));
 		tmp = chdir(getenv("HOME"));
 		if (tmp)
-			perror("Error: ");
+			perror("cd: ");
 	}
 	else
 	{
 		tmp = chdir(commands->args[1]);
 		if (tmp)
-			perror("ffError: ");
+			perror("cd: ");
 	}
-	exit(0);
 }
 
 void	ft_pwd()
@@ -81,24 +81,27 @@ void	ft_pwd()
 	}
 	else
 		perror("pwd");
-	exit(0);
+	// exit(0);
 }
 
-void	builts_in(t_command *commands)
+int	builts_in(t_command *commands, char **env)
 {
+	if (env[0][2] == '\0') // TODO just for flags 
+		printf("lol\n");
 	if (!ft_strncmp(commands->name, "echo", 4))
-		ft_echo(commands);
+		ft_echo(commands); // TODO solve -n -n -n ... 
 	else if (!ft_strncmp(commands->name, "cd", 2)) //TODO solve the mistake 
 		ft_cd(commands);
 	else if (!ft_strncmp(commands->name, "pwd", 3))
 		ft_pwd();
 	else if (!ft_strncmp(commands->name, "export", 6))
-		ft_export(commands);
+		ft_export(commands, env);
 	// else if (!ft_strncmp(commands->name, "unset", 5))
 	// 	ft_unset(commands);
 	// else if (!ft_strncmp(commands->name, "env", 3))
 	// 	ft_env(commands);
 	// else if (!ft_strncmp(commands->name, "exit", 4))
 		// ft_exit(commands);
-	printf("From Here\n");
+	return (0);
 }
+ 

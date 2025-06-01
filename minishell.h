@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 11:49:51 by imatouil          #+#    #+#             */
-/*   Updated: 2025/05/30 20:34:41 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/01 18:15:16 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int			commands(t_ms	*head);
 t_command	*mk_command(t_ms *head, t_command *prev);
 void		ft_executing(t_command	*commands,char **env);
 void		reset_signals(void);
-void	builts_in(t_command *commands);
+int			builts_in(t_command *commands, char **env);
+void	ft_export(t_command *commands, char **env);
 
 #endif
