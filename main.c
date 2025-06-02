@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 12:38:03 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/05/30 11:49:48 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:13:22 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,10 @@ int	main(int ac,char **av,char **env)
 	while (input)
 	{
 		add_history(input);
-		commands = token_input(input);
+		commands = token_input(input, env);
 		// print_com(commands);
-		ft_executing(commands, env);
+		ft_executing(commands, commands->envir);
+		env = commands->envir;
 		input = readline("minishell$ ");
 	}
 }

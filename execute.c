@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 11:49:44 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/01 18:07:47 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:03:10 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	ft_exec(t_command	*commands,char **env)
 	printf("error command %s not found\n", commands->name);
 }
 
-void	ft_executing(t_command	*commands,char **env)
+void	ft_executing(t_command	*commands, char **env)
 {
 	int			pid;
 	int			status;

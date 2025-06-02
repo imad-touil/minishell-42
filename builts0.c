@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:53:17 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 02:53:10 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:57:50 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@ int	ft_env(char **env)
 	while (++i)
 		printf("%s\n", env[i]); // TODO is it the envirement ;
 	return (0);
-}
-
-int	ft_exit()
-{
-	exit(EXIT_SUCCESS);
 }
 
 int	builts_in(t_command *commands, char **env)
@@ -42,9 +37,9 @@ int	builts_in(t_command *commands, char **env)
 	// else if (!ft_strncmp(commands->name, "unset", 5))
 	// 	ft_unset(commands);
 	else if (!ft_strncmp(commands->name, "env", 3))
-		ft_env(env);
+		return (ft_env(env));
 	else if (!ft_strncmp(commands->name, "exit", 4))
-		return (ft_exit());
+		return (ft_exit(commands));
 	return (-1); // Return -1 if no builts in functions 
 }
  

@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:44:40 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/05/30 11:49:55 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:05:10 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ t_ms	*cut_word(char *input, int *i)
 	return (node);
 }
 
-t_command	*token_input(char *input)
+t_command	*token_input(char *input, char **env)
 {
 	t_ms	*head;
 	t_ms	*current;
@@ -109,5 +109,7 @@ t_command	*token_input(char *input)
 		else
 			link_list(head, current);
 	}
-	return (mk_command(head, NULL));
+	t_command *com = mk_command(head, NULL);
+	com->envir = env;
+	return (com);
 }

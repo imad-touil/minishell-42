@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/31 11:17:29 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 02:43:50 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 13:17:52 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ int	ft_export(t_command *commands, char **env)
 		return (perror("export: "), 1337); // exit status ??
 	i = -1;
 	while ((*env)[++i])
-		new_env[i] = env[i];
+		new_env[i] = ft_strdup(env[i]);
 	new_env[i] = ft_strdup(commands->args[1]);
 	new_env[i + 1] = NULL;
 	env = new_env;
+	printf("%s\n",getenv("saf"));
 	return (0);
 }
 // tartib d ziyada machi da2iman kattzad f lakhar;

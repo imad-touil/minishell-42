@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 11:49:51 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/01 23:30:04 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 15:23:09 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,18 @@ typedef struct s_command
     char				**args; // array of args
     t_redirection		*redirections; // pointer to redirection ida kan
     int					pipe[2]; // array of file descriptor
+	char				**envir;
     struct s_command	*next; // next comand ida kan
 	struct s_command	*prev; // comand li 9bel mna
 } t_command;
 
-t_command	*token_input(char *input);
+typedef struct s_env // TODO Execution  
+{
+	char	**envirement;
+	int		exit_status;
+}			t_env;
+
+t_command	*token_input(char *input, char **env);
 int			commands(t_ms	*head);
 t_command	*mk_command(t_ms *head, t_command *prev);
 void		ft_executing(t_command	*commands,char **env);
@@ -79,5 +86,6 @@ int			ft_echo(t_command *commands);
 int			ft_cd(t_command *commands);
 int			ft_pwd();
 int			ft_export(t_command *commands, char **env);
+int			ft_exit(t_command *cmd);
 
 #endif

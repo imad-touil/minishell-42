@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 READLINE_INC = -I/$(HOME)/goinfre/homebrew/opt/readline/include
 READLINE_LIB = -L/$(HOME)/goinfre/homebrew/opt/readline/lib -lreadline
 LIBFT = ./ft_libft/libft.a
