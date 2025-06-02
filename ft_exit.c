@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 13:57:20 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 15:26:15 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 16:58:24 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_exit(t_command *cmd)
 	}
 	if (cmd->args[2])
 	{
-		printf("minishell: exit: too many arguments\n");
+		printf("exit\nminishell: exit: too many arguments\n");
 		return (1); // TODO exit status 
 	}
 	exit(ft_atoi(cmd->args[1]));

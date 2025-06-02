@@ -6,21 +6,11 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/30 12:53:17 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 13:57:50 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:31:41 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_env(char **env)
-{
-	int	i;
-
-	i = -1;
-	while (++i)
-		printf("%s\n", env[i]); // TODO is it the envirement ;
-	return (0);
-}
 
 int	builts_in(t_command *commands, char **env)
 {
