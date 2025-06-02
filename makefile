@@ -1,7 +1,7 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
-READLINE_INC = -I/$(HOME)/goinfre/homebrew/opt/readline/include
-READLINE_LIB = -L/$(HOME)/goinfre/homebrew/opt/readline/lib -lreadline
+CFLAGS = -Wall -Wextra -Werror
+READLINE_INC = -I$(HOME)/mylibs/readline/include
+READLINE_LIB = -L$(HOME)/mylibs/readline/lib -lreadline
 LIBFT = ./ft_libft/libft.a
 NAME = minishell
 
@@ -28,5 +28,7 @@ fclean: clean
 	$(MAKE) -C ./ft_libft fclean
 
 re: fclean all
+
+mk: all clean
 
 .PHONY: all clean fclean re $(LIBFT)

@@ -5,17 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/30 12:53:17 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 17:31:41 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/02 17:28:16 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/02 18:08:33 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	builts_in(t_command *commands, char **env)
+int	builts_in(t_command *commands, t_env **env)
 {
-	if (env[0][2] == '\0') // TODO just for flags 
-		printf("lol\n");
 	if (!ft_strncmp(commands->name, "echo", 4))
 		return (ft_echo(commands)); // TODO solve -n -n -n ... && return value
 	else if (!ft_strncmp(commands->name, "cd", 2)) //TODO solve the mistake  && return value
@@ -32,4 +30,3 @@ int	builts_in(t_command *commands, char **env)
 		return (ft_exit(commands));
 	return (-1); // Return -1 if no builts in functions 
 }
- 

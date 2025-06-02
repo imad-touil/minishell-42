@@ -5,87 +5,93 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/30 11:49:51 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 15:23:09 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/01 13:54:38 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/02 18:09:24 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include "./ft_libft/libft.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+# include "./ft_libft/libft.h"
 
-// typedef enum s_builts {
-// 	echo,
-// 	cd,
-// 	pwd,
-// 	export,
-// 	unset,
-// 	env,
-// 	exit,
-// }	t_builts;
-
-typedef enum e_token_type {
-	TOKEN_WORD,			// Regular command/argument
-	TOKEN_SQUOTE,		// '
-	TOKEN_DQUOTE,		// "
-	TOKEN_PIPE,			// |
-	TOKEN_REDIR_IN,		// <
-	TOKEN_REDIR_OUT,	// >
-	TOKEN_APPEND,		// >>
-	TOKEN_HEREDOC,		// <<
-	// TOKEN_EOF			// End of input
+typedef enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_SQUOTE,
+	TOKEN_DQUOTE,
+	TOKEN_PIPE,	
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_APPEND,
+	TOKEN_HEREDOC,
+	TOKEN_ENV,
+	TOKEN_EOF,
 }	t_token_type;
 
 typedef struct s_ms
 {
 	char		*value;
 	int			type;
-	struct s_ms *next;
-}				t_ms;
+	struct s_ms	*next;
+}	t_ms;
 
 typedef struct s_redirection
 {
-    t_token_type			type; 	//type dyal redirection
-    char					*file;	// file
-    struct s_redirection	*next_re;	//next redirection ida kanet
-} t_redirection;
+	t_token_type			type;
+	char					*file;
+	struct s_redirection	*next_re;
+}	t_redirection;
 
 typedef struct s_command
 {
-    char				*name; // command name
-    char				**args; // array of args
-    t_redirection		*redirections; // pointer to redirection ida kan
-    int					pipe[2]; // array of file descriptor
-	char				**envir;
-    struct s_command	*next; // next comand ida kan
-	struct s_command	*prev; // comand li 9bel mna
-} t_command;
+	char				*name;
+	char				**args;
+	t_redirection		*redirections;
+	int					pipe[2];
+	struct s_command	*next;
+	struct s_command	*prev;
+}	t_command;
 
-typedef struct s_env // TODO Execution  
+typedef struct s_env
 {
-	char	**envirement;
-	int		exit_status;
+	char	**vars;
+	int		count;
+	int		exit_s;
 }			t_env;
 
-t_command	*token_input(char *input, char **env);
-int			commands(t_ms	*head);
-t_command	*mk_command(t_ms *head, t_command *prev);
-void		ft_executing(t_command	*commands,char **env);
+void	print_token(t_ms *head);
+
+void		GIRV(t_ms *head, t_env *env);
 void		reset_signals(void);
-int			builts_in(t_command *commands, char **env);
+int			commands(t_ms	*head);
+void		ft_free(t_ms	*head);
+int			check_sintax(t_ms *head);
+t_command	*token_input(char *input, t_env *env);
+char		*shorting_code(char *input, t_env *env);
+void		link_list(t_ms *ms1, t_ms *ms2);
+t_ms		*make_list(char *value, int type, ...);
+t_command	*mk_command(t_ms *head, t_command *prev);
+void		ft_executing(t_command	*commands, t_env *env);
+t_ms		*process_token(int *s, int *e, char *str, t_ms **head);
+
+/*			env				*/
+t_env		*init_env(char **envp);
+char		*ft_getenv(t_env *env, const char *key);
+int			builts_in(t_command *commands, t_env **env);
 int			ft_echo(t_command *commands);
 int			ft_cd(t_command *commands);
 int			ft_pwd();
-int			ft_export(t_command *commands, char **env);
+int			ft_export(t_command *commands, t_env **env);
+int			ft_env(char **env);
 int			ft_exit(t_command *cmd);
 
 #endif

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/31 11:17:29 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 13:17:52 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/02 17:30:18 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/02 18:09:08 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_valid_id(char *id)
 	return (-1);
 }
 
-int	ft_export(t_command *commands, char **env)
+int	ft_export(t_command *commands, t_env **env)
 {
 	char	**new_env;
 	int		i;
