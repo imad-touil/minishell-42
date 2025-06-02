@@ -6,13 +6,13 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 21:29:31 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/01 21:29:53 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/01 21:37:06 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(t_command *commands)
+int	ft_echo(t_command *commands) // TODO return 1337 if error encounter 
 {
 	int	i;
 	int	key;
