@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:28:16 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/05 16:48:04 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/05 23:03:54 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 int	builts_in(t_command *commands, t_env *env)
 {
 	if (!ft_strncmp(commands->name, "echo", 4))
-		return (ft_echo(commands, env)); // TODO solve -n -n -n ... && return value
-	else if (!ft_strncmp(commands->name, "cd", 2)) //TODO solve the mistake  && return value
-		return (ft_cd(commands));
+		return (ft_echo(commands, env));
+	else if (!ft_strncmp(commands->name, "cd", 2)) // return value
+		return (ft_cd(commands, env));
 	else if (!ft_strncmp(commands->name, "pwd", 3)) // TODO return value
 		return (ft_pwd());
 	else if (!ft_strncmp(commands->name, "export", 6)) // TODO return value
