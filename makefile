@@ -30,5 +30,6 @@ fclean: clean
 re: fclean all
 
 mk: all clean
+	./minishell
 
 .PHONY: all clean fclean re $(LIBFT)

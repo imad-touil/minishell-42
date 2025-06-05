@@ -6,40 +6,59 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:28:49 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 17:29:00 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/05 22:45:53 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(t_command *commands) // TODO return 1337 if error encounter 
+static int	is_valid(char *arg)
 {
 	int	i;
-	int	key;
-	int	newline;
 
-	newline = 0;
-	key = 0;
-	i = 1;
-	while (commands->args[1][++i])
+	if (!ft_strncmp(arg, "-n", 2))
 	{
-		if (commands->args[1][i] != 'n')
-			key = 1;
-	}
-	if (!ft_strncmp(commands->args[1], "-n", 2) && key)
-	{
-		newline = 1;
-		i = 0;
+		i = 1;
+		while (arg[++i])
+		{
+			if (arg[i] != 'n')
+				return (-1);
+		} 
 	}
 	else
-		i = 1;
-	while (commands->args[++i])
+		return (-1);
+	return (0);
+}
+
+static void	print_args(char **args, int	start)
+{
+	while (args[start])
 	{
-		printf("%s", commands->args[i]);
-		if (commands->args[i + 1])
+		printf("%s", args[start]);
+		start++;
+		if (args[start])
 			printf(" ");
 	}
-	if (newline)
+}
+
+int	ft_echo(t_command *commands, t_env *env) 
+{
+	int	i;
+	int	state;
+
+	i = 0;
+	state = 1;
+	while (commands->args[++i])
+	{
+		if (is_valid(commands->args[i]))
+		{
+			state = 0;
+			break ;
+		}
+	}
+	print_args(commands->args, i);
+	if (i == 1)
 		printf("\n");
-	return (0);
+	env->exit_s = 0;
+	return (env->exit_s);
 }
