@@ -6,34 +6,25 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:29:12 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/05 23:21:26 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/06 01:24:22 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handel_error(t_env *env)
-{
-	env->exit_s = 1;
-	perror("cd: ");
-	return (0);
-}
-
 int	ft_cd(t_command *commands, t_env *env)
 {
 	int	tmp;
 
-	if (!commands->args[1])
+	tmp = chdir(commands->args[1]);
+	if (tmp)
 	{
-		tmp = chdir(getenv("HOME"));
-		if (tmp)
-			return (handel_error(env));
-	}
-	else
-	{
-		tmp = chdir(commands->args[1]);
-		if (tmp)
-			return (handel_error(env));
+		env->exit_s = 1;
+		if (!commands->args[1])
+			printf("bash: cd: No such file or directory\n");
+		else
+			printf("bash: cd: %s: No such file or directory\n", commands->args[1]);
+		return (0);
 	}
 	env->exit_s = 0;
 	return (env->exit_s);

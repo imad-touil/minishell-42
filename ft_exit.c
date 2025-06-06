@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:32:07 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 17:32:17 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/06 01:49:54 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ int	ft_exit(t_command *cmd)
 		if (!ft_isdigit(cmd->args[1][i]))
 		{
 			printf("exit\nminshell: exit: %s: numeric argument required\n", cmd->args[1]);
-			exit(255); // TODO exit status 
+			exit(255);
 		}
 	}
 	if (cmd->args[2])
 	{
 		printf("exit\nminishell: exit: too many arguments\n");
-		return (1); // TODO exit status 
+		return (1);
 	}
 	exit(ft_atoi(cmd->args[1]));
 }

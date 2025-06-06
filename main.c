@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 12:38:03 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/02 18:05:53 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/06 01:28:18 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	free_command(t_command *cmd)
 	free(cmd);
 }
 
-int	main(int ac,char **av,char **env)
+int	main(int ac,char **av, char **env)
 {
 	(void)av;
 	t_command	*commands;
