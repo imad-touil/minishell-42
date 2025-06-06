@@ -6,7 +6,13 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:31:00 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 17:31:01 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/06 12:28:19 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+// int	ft_unset(t_command *commands, t_env *env)
+// {
+	
+// }
