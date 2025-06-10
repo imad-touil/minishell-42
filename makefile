@@ -31,5 +31,7 @@ re: fclean all
 
 mk: all clean
 	./minishell
+norm:
+	norminette
 
 .PHONY: all clean fclean re $(LIBFT)
