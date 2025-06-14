@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:54:38 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/06 12:05:30 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/14 18:27:42 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,15 @@ t_ms		*process_token(int *s, int *e, char *str, t_ms **head);
 /*			env				*/
 t_env		*init_env(char **envp);
 char		*ft_getenv(t_env *env, const char *key);
+
+/*          builts in functions  */
+# define	DEBUG "🐞 LOL\n" // Message for debuging 
 int			builts_in(t_command *commands, t_env *env);
 int			ft_echo(t_command *commands, t_env *env);
 int			ft_cd(t_command *commands, t_env *env);
 int			ft_pwd(t_env *env);
 int			ft_export(t_command *commands, t_env *env);
+int			ft_unset(t_command *commands, t_env *env);
 int			ft_env(t_command *commands, t_env *env);
 int			ft_exit(t_command *cmd);
 

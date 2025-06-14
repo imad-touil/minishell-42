@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:30:18 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/10 20:52:19 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/14 19:51:01 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_valid_key(char *id)
 	return (0);
 }
 
-static char	**ft_addEnv(t_command *commands, t_env *env)
+static char	**ft_add_env(t_command *commands, t_env *env)
 {
 	int		i;
 	char	**new_env;
@@ -57,13 +57,13 @@ int	ft_export(t_command *commands, t_env *env)
 	temp = ft_split(commands->args[1], '=');
 	key = temp[0];
 	value = temp[1];
-	if (is_valid_key(key) || key[0] == '=')
+	if (is_valid_key(key) || commands->args[1][0] == '=')
 	{
 		env->exit_s = 1;
 		return (printf("minshell export: '%s' not an identifier\n",
-					commands->args[1]), 0);
+				commands->args[1]), 0);
 	}
-	new_env = ft_addEnv(commands, env);
+	new_env = ft_add_env(commands, env);
 	return (0);
 }
 // tartib d ziyada machi da2iman kattzad f lakhar;
