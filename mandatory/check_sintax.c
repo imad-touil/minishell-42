@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 11:48:20 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/02 17:25:52 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/20 14:23:44 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/20 14:23:45 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -41,16 +43,13 @@ int	check_red(t_ms *head)
 	if (!head || (head->type >= TOKEN_REDIR_IN && head->type <= TOKEN_HEREDOC))
 		return (ft_putstr_fd("minishell: parse error near \\n\n", 2), 0);
 	i = node_counter(head);
-	if (i != 1)
+	if (i == 0)
 	{
-		if (i > 1)
-			ft_putstr_fd("minishell: to many files for red\n", 2);
-		else
-			ft_putstr_fd("minishell: no files for red\n", 2);
+		ft_putstr_fd("minishell: no files for red\n", 2);
 		return (0);
 	}
 	head = ret_redorpipe(head);
-	if (head && head->type == TOKEN_PIPE)
+	if (head && (head->type == TOKEN_PIPE))
 		return (check_sintax(head->next));
 	if (head && (head->type >= TOKEN_REDIR_IN && head->type <= TOKEN_HEREDOC))
 		return (check_red(head->next));
@@ -61,7 +60,7 @@ int	check_sintax(t_ms *head)
 {
 	if (!head || !(head->type >= TOKEN_WORD && head->type <= TOKEN_DQUOTE))
 	{
-		ft_putstr_fd("minishell: it have to be started with command\n", 2);
+		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
 		return (0);
 	}
 	while (head && (head->type >= TOKEN_WORD && head->type <= TOKEN_DQUOTE))

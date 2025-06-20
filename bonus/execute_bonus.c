@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   execute_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 17:25:54 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/02 18:07:07 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/02 19:42:12 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/17 22:41:35 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-// typedef struct s_herdoc
-// {
-// 	char	*del;
-// 	int		pipe[2];
-// }	t_herdoc;
-
-// int	setup_all_herdoc(t_redirection *redirs)
-// {
-// 	t_herdoc	herdocs[16];
-	
-// }
+#include "minishell_bonus.h"
 
 int setup_redirections(t_redirection *redirs)
 {
@@ -30,6 +18,7 @@ int setup_redirections(t_redirection *redirs)
 
 	while (redirs)
 	{
+
 		if (redirs->type == TOKEN_REDIR_IN)
 			fd = open(redirs->file, O_RDONLY);
 		else if (redirs->type == TOKEN_REDIR_OUT)
@@ -86,41 +75,46 @@ void	ft_exec(t_command	*commands,t_env *env)
 		{
 			reset_signals();
 			free_paths(paths);
-			execve(com_path,commands->args,env->vars);
-			free(com_path);
-            ft_putstr_fd("error in execve\n", 2);
-            return;
+			if (execve(com_path,commands->args,env->vars) == -1)
+            	return (free(com_path), perror("minishell"));
 		}
 		free(com_path);
 		i++;
 	}
 	free_paths(paths);
-	printf("error command %s not found\n", commands->name);
+	ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
 }
 
-void	ft_executing(t_command	*commands,t_env *env)
+void	ft_wait(int *exit_s)
 {
-	int			pid;
+	int	status;
 
-	if (!commands)
-		return ;
-	if (!builts_in(commands, env))
-		return ;
+	wait(&status);
+	if (WIFEXITED(status))
+		*exit_s = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		*exit_s = 128 + WTERMSIG(status);
+}
+
+void	ft_executing(t_command *cmd, t_env *env)
+{
+	int	pid;
+
+	if (!cmd)
+		return;
 	pid = fork();
 	if (pid == 0)
 	{
-		if (commands->redirections)
-		{
-			if (!setup_redirections(commands->redirections))
-				exit(EXIT_FAILURE);
-			ft_exec(commands, env);
+		if (cmd->redirections && !setup_redirections(cmd->redirections))
 			exit(EXIT_FAILURE);
-		}
-		else
-		{
-			ft_exec(commands,env);
-			exit(EXIT_FAILURE);
-		}
+		ft_exec(cmd, env);
+		exit(127);
 	}else
-		wait(&env->exit_s);
+	{
+		ft_wait(&env->exit_s);
+		if (cmd->and && !env->exit_s)
+			ft_executing(cmd->and, env);
+		else if (cmd->or && env->exit_s)
+			ft_executing(cmd->or, env);
+	}
 }

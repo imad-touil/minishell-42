@@ -5,17 +5,19 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/02 15:02:14 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/20 12:47:44 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/20 14:25:30 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/20 14:25:31 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
 t_env	*init_env(char **envp)
 {
 	t_env	*env;
-	int 	i;
+	int		i;
 	int		count;
 
 	count = 0;

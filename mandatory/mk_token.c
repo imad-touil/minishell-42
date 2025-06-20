@@ -5,83 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 14:44:40 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/02 17:26:27 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/20 14:25:43 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/20 14:25:44 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
 #include "minishell.h"
-
-t_ms	*make_list(char *value, int type, ...)
-{
-	t_ms	*ms;
-
-	ms = malloc(sizeof(t_ms));
-	if (!ms)
-	{
-		perror("Error : ");
-		exit(1);
-	}
-	ms->value = ft_strdup(value);
-	ms->type = type;
-	ms->next = NULL;
-	return (ms);
-}
-
-void	link_list(t_ms *ms1, t_ms *ms2)
-{
-	while(ms1->next)
-		ms1 = ms1->next;
-	ms1->next = ms2;
-}
-
-int is_whitespace(char c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
-}
-
-void	GIRV(t_ms *head, t_env *env)
-{
-	char	*tmp;
-
-	while (head)
-	{
-		if (head->type == TOKEN_WORD || head->type == TOKEN_DQUOTE)
-		{
-			tmp = head->value;
-			head->value = shorting_code(head->value, env);
-			free(tmp);
-		}
-		head = head->next;
-	}
-}
-
-t_ms	*cut_word(char *input, int *i)
-{
-	char	c;
-	char	*word;
-	t_ms	*node;
-	int		start;
-
-	c = input[*i];
-	(*i)++;
-	start = *i;
-	while (input[*i] && input[*i] != c)
-		(*i)++;
-	if (!input[*i])
-	{
-		ft_putstr_fd("minishell: syntax error: unclosed quote\n", 2);
-		return (NULL);
-	}
-	word = ft_substr(input, start, *i - start);
-	if (c == '\'')
-		node = make_list(word, TOKEN_SQUOTE);
-	else
-		node = make_list(word, TOKEN_DQUOTE);
-	(*i)++;
-	free(word);
-	return (node);
-}
 
 static t_ms	*handle_special_tokens(char *input, int *i)
 {
@@ -103,12 +34,17 @@ static t_ms	*handle_word_token(char *input, int *i, int start)
 	char	*word;
 	t_ms	*token;
 
-	while (input[*i] && !is_whitespace(input[*i])
-		&& !ft_strchr("|<>\"\'", input[*i]))
+	while (input[*i] && !is_whitespace(input[*i]))
+	{
+		if (ft_strchr("|<>\"\'", input[*i]))
+			break ;
 		(*i)++;
+	}
 	word = ft_substr(input, start, *i - start);
 	token = make_list(word, TOKEN_WORD);
-	free(word);	
+	if (!ft_strchr(" \t\n|<>", input[*i]))
+		token->merg = 1;
+	free(word);
 	return (token);
 }
 
@@ -130,6 +66,31 @@ static t_ms	*handel_tokens(char *input, int *i)
 	return (handle_word_token(input, i, start));
 }
 
+void	glue_tokens(t_ms *tokens)
+{
+	t_ms	*current;
+	t_ms	*next_node;
+	char	*new_str;
+
+	current = tokens;
+	while (current != NULL && current->next != NULL)
+	{
+		if (current->merg == 1)
+		{
+			next_node = current->next;
+			new_str = ft_strjoin(current->value, next_node->value);
+			free(current->value);
+			current->value = new_str;
+			current->next = next_node->next;
+			current->merg = next_node->merg;
+			free(next_node->value);
+			free(next_node);
+		}
+		else
+			current = current->next;
+	}
+}
+
 t_command	*token_input(char *input, t_env *env)
 {
 	t_ms		*head;
@@ -143,15 +104,16 @@ t_command	*token_input(char *input, t_env *env)
 	{
 		current = handel_tokens(input, &i);
 		if (!current)
-			return (ft_free(head), NULL);
+			return (ft_free(head), env->exit_s = 2, NULL);
 		if (!head)
 			head = current;
 		else
 			link_list(head, current);
 	}
 	if (head && !check_sintax(head))
-		return (ft_free(head), NULL);
-	GIRV(head, env);
+		return (ft_free(head), env->exit_s = 2, NULL);
+	girv(head, env);
+	glue_tokens(head);
 	com = mk_command(head, NULL);
 	ft_free(head);
 	return (com);

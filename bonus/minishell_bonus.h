@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   minishell_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:54:38 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/20 14:25:20 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/17 22:40:13 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef MINISHELL_BONUS_H
+# define MINISHELL_BONUS_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -28,19 +28,22 @@ typedef enum e_token_type
 	TOKEN_WORD,
 	TOKEN_SQUOTE,
 	TOKEN_DQUOTE,
-	TOKEN_PIPE,	
+	TOKEN_PIPE,
+	TOKEN_AND,
+	TOKEN_OR,
+	TOKEN_EOF,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
 	TOKEN_ENV,
-	TOKEN_EOF,
 }	t_token_type;
 
 typedef struct s_ms
 {
 	char		*value;
 	int			type;
+	int			merg;
 	struct s_ms	*next;
 }	t_ms;
 
@@ -57,6 +60,8 @@ typedef struct s_command
 	char				**args;
 	t_redirection		*redirections;
 	int					pipe[2];
+	struct s_command	*and;
+	struct s_command	*or;
 	struct s_command	*next;
 	struct s_command	*prev;
 }	t_command;
@@ -68,36 +73,41 @@ typedef struct s_env
 	int		exit_s;
 }			t_env;
 
-void	print_token(t_ms *head);
+/*			debuging		*/
+void		print_token(t_ms *head);
+void		print_com(t_command *com, int key);
 
-void		GIRV(t_ms *head, t_env *env);
-void		reset_signals(void);
+/*			parc_tokens		*/
 int			commands(t_ms	*head);
-void		ft_free(t_ms	*head);
-int			check_sintax(t_ms *head);
-t_command	*token_input(char *input, t_env *env);
-char		*shorting_code(char *input, t_env *env);
-void		link_list(t_ms *ms1, t_ms *ms2);
-t_ms		*make_list(char *value, int type, ...);
 t_command	*mk_command(t_ms *head, t_command *prev);
+void		f_norminette(t_ms *head, t_command *command);
 void		ft_executing(t_command	*commands, t_env *env);
 t_ms		*process_token(int *s, int *e, char *str, t_ms **head);
+
+/*			token			*/
+int			is_whitespace(char c);
+int			check_sintax(t_ms *head);
+void		girv(t_ms *head, t_env *env);
+t_ms		*cut_word(char *input, int *i);
+void		link_list(t_ms *ms1, t_ms *ms2);
+t_command	*token_input(char *input, t_env *env);
+t_ms		*make_list(char *value, int type, ...);
+char		*shorting_code(char *input, t_env *env);
+
 
 /*			env				*/
 t_env		*init_env(char **envp);
 char		*ft_getenv(t_env *env, const char *key);
 
-/*          builts in functions  */
-# define	DEBUG "🐞 LOL\n" // Message for debuging 
-int			builts_in(t_command *commands, t_env *env);
-int			ft_echo(t_command *commands, t_env *env);
-int			ft_cd(t_command *commands, t_env *env);
-int			ft_pwd(t_env *env);
-int			ft_export(t_command *commands, t_env *env);
-int			ft_unset(t_command *commands, t_env *env);
-int			ft_env(t_command *cmd, t_env *env);
-int			ft_exit(t_command *cmd);
+/*			signals			*/
+void		crtl_c(int sig);
+void		setup_sig(void);
+void		reset_signals(void);
 
-char		**ft_setenv(t_env *env, char *key, char *val);
+/*			f_leaks			*/
+void		free_env(t_env *envs);
+void		ft_free(t_ms	*head);
+void		free_command(t_command *cmd);
+void		free_redirections(t_redirection *redir);
 
 #endif

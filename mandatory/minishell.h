@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/01 13:54:38 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/20 14:25:20 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/20 14:22:53 by imatouil          #+#    #+#             */
+/*   Updated: 2025/06/20 14:23:28 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -28,19 +30,20 @@ typedef enum e_token_type
 	TOKEN_WORD,
 	TOKEN_SQUOTE,
 	TOKEN_DQUOTE,
-	TOKEN_PIPE,	
+	TOKEN_PIPE,
+	TOKEN_EOF,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
 	TOKEN_ENV,
-	TOKEN_EOF,
 }	t_token_type;
 
 typedef struct s_ms
 {
 	char		*value;
 	int			type;
+	int			merg;
 	struct s_ms	*next;
 }	t_ms;
 
@@ -68,9 +71,9 @@ typedef struct s_env
 	int		exit_s;
 }			t_env;
 
-void	print_token(t_ms *head);
-
-void		GIRV(t_ms *head, t_env *env);
+void		print_token(t_ms *head);
+void		print_com(t_command *com, int key);
+void		girv(t_ms *head, t_env *env);
 void		reset_signals(void);
 int			commands(t_ms	*head);
 void		ft_free(t_ms	*head);
@@ -82,6 +85,9 @@ t_ms		*make_list(char *value, int type, ...);
 t_command	*mk_command(t_ms *head, t_command *prev);
 void		ft_executing(t_command	*commands, t_env *env);
 t_ms		*process_token(int *s, int *e, char *str, t_ms **head);
+void		f_norminette(t_ms *head, t_command *command);
+t_ms		*cut_word(char *input, int *i);
+int			is_whitespace(char c);
 
 /*			env				*/
 t_env		*init_env(char **envp);
@@ -95,9 +101,20 @@ int			ft_cd(t_command *commands, t_env *env);
 int			ft_pwd(t_env *env);
 int			ft_export(t_command *commands, t_env *env);
 int			ft_unset(t_command *commands, t_env *env);
-int			ft_env(t_command *cmd, t_env *env);
+int			ft_env(t_command *commands, t_env *env);
 int			ft_exit(t_command *cmd);
 
 char		**ft_setenv(t_env *env, char *key, char *val);
+
+/*			F_LEAKS			*/
+void		free_command(t_command *cmd);
+void		free_env(t_env *envs);
+void		free_redirections(t_redirection *redir);
+
+/*			SIGNALS			*/
+void		crtl_c(int sig);
+void		setup_sig(void);
+void		reset_signals(void);
+
 
 #endif
