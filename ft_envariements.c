@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:02:14 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/02 17:26:03 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/20 12:47:44 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*ft_getenv(t_env *env, const char *key)
 
 	key_len = ft_strlen(key);
 	i = 0;
-	while (i < env->count)
+	while (env->vars[i])
 	{
 		if (ft_strncmp(env->vars[i], key, key_len) == 0
 			&& env->vars[i][key_len] == '=')

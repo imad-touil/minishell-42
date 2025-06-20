@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 13:54:38 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/14 18:27:42 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/20 11:43:31 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,7 @@ int			ft_export(t_command *commands, t_env *env);
 int			ft_unset(t_command *commands, t_env *env);
 int			ft_env(t_command *commands, t_env *env);
 int			ft_exit(t_command *cmd);
+
+char		**ft_setenv(t_env *env, char *key, char *val);
 
 #endif

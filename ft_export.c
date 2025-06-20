@@ -6,64 +6,71 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:30:18 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/14 19:51:01 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/20 14:00:11 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_valid_key(char *id)
+static int	is_valid_key(char *key)
 {
-	if (ft_isdigit(id[0]))
+	if (ft_isdigit(key[0]))
 		return (1);
 	return (0);
 }
 
-static char	**ft_add_env(t_command *commands, t_env *env)
+static int	is_it_in(t_env *env, char *key)
 {
-	int		i;
-	char	**new_env;
+	int	i;
 
-	i = 0;
-	while (env->vars[i])
-		i++;
-	new_env = malloc((i + 2) * sizeof(char *));
-	if (!new_env)
-		return (perror("export: "), NULL);
 	i = -1;
 	while (env->vars[++i])
-		new_env[i] = ft_strdup(env->vars[i]);
-	new_env[i] = ft_strdup(commands->args[1]);
-	new_env[i + 1] = NULL;
-	env->vars = new_env;
-	return (new_env);
+	{
+		if (!ft_strncmp(env->vars[i], key, ft_strlen(key)))
+			return (i);
+	}
+	return (-1);
 }
 
-int	ft_export(t_command *commands, t_env *env)
+static char	**ft_addenv(t_env *env, char *arg, char *key)
+{
+	int	i;
+	int	pos;
+
+	i = 0;
+	pos = is_it_in(env, key);
+	if (pos != -1)
+		env->vars[pos] = ft_strdup(arg);
+	else
+		env->vars = ft_setenv(env, key, arg + ft_strlen(key) + 1);
+	return (env->vars);
+}
+
+int	ft_export(t_command *cmds, t_env *env)
 {
 	int		i;
-	char	**new_env;
+	char	**tmp;
 	char	*key;
-	char	*value;
-	char	**temp;
 
-	if (!commands->args[1])
+	i = 0;
+	if (!cmds->args[1])
 	{
-		i = -1;
 		while (env->vars[++i])
 			printf("declare -x %s\n", env->vars[i]);
-		return (0);
 	}
-	temp = ft_split(commands->args[1], '=');
-	key = temp[0];
-	value = temp[1];
-	if (is_valid_key(key) || commands->args[1][0] == '=')
+	i = 0;
+	while (cmds->args[++i])
 	{
-		env->exit_s = 1;
-		return (printf("minshell export: '%s' not an identifier\n",
-				commands->args[1]), 0);
+		tmp = ft_split(cmds->args[i], '=');
+		key = tmp[0];
+		if (is_valid_key(key) || cmds->args[i][0] == '=')
+		{
+			printf("minishell: export: `%s': not a valid identifier\n",
+				cmds->args[i]);
+			env->exit_s = 1;
+		}
+		else
+			env->vars = ft_addenv(env, cmds->args[i], key);
 	}
-	new_env = ft_add_env(commands, env);
 	return (0);
 }
-// tartib d ziyada machi da2iman kattzad f lakhar;

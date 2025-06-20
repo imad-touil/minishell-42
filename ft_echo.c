@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:28:49 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/05 22:45:53 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:48:09 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ static int	is_valid(char *arg)
 		{
 			if (arg[i] != 'n')
 				return (-1);
-		} 
+		}
 	}
 	else
 		return (-1);
 	return (0);
 }
 
-static void	print_args(char **args, int	start)
+static void	print_args(char **args, int start)
 {
 	while (args[start])
 	{
@@ -41,7 +41,7 @@ static void	print_args(char **args, int	start)
 	}
 }
 
-int	ft_echo(t_command *commands, t_env *env) 
+int	ft_echo(t_command *commands, t_env *env)
 {
 	int	i;
 	int	state;

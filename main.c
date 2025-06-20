@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 12:38:03 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/06 01:28:18 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/19 11:59:08 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	reset_signals(void)
 	signal(SIGCHLD, SIG_DFL);
 }
 
-void	print_minishit(void)
+void	print_minishell(void)
 {
 	printf("+=========================================================================+\n");
 	printf("|.___  ___.  __  .__   __.  __       _______. __    __   __  .___________.|\n");
@@ -130,7 +130,7 @@ int	main(int ac,char **av, char **env)
 	if (ac != 1)
 		return (printf("no need for args\n"), 1);
 	setup_sig();
-	print_minishit();
+	print_minishell();
 	envs = init_env(env);
 	input = readline("minishell$ ");
 	while (input)
