@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:22:53 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 14:23:28 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/21 13:30:15 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ t_ms		*process_token(int *s, int *e, char *str, t_ms **head);
 void		f_norminette(t_ms *head, t_command *command);
 t_ms		*cut_word(char *input, int *i);
 int			is_whitespace(char c);
+int 		setup_redirections(t_redirection *redirs);
 
 /*			env				*/
 t_env		*init_env(char **envp);

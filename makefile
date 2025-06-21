@@ -34,6 +34,7 @@ clean_bonus:
 
 fclean: clean
 	@$(MAKE) -C ./mandatory fclean
+	@rm -rf minishell
 
 fclean_bonus: clean_bonus
 	@$(MAKE) -C ./bonus fclean

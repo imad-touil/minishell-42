@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:31:00 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/19 11:38:45 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/21 11:07:05 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 static void	free_split(char **arr)
 {
-	int i = 0;
-	if (!arr) return;
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
 	while (arr[i])
 		free(arr[i++]);
 	free(arr);
@@ -66,12 +69,12 @@ int	ft_unset(t_command *commands, t_env *env)
 	while (env->vars[++i])
 	{
 		tmp = ft_split(env->vars[i], '=');
-		if (!ft_strncmp(tmp[0], key[0], ft_strlen(key[0])) &&
-			ft_strlen(tmp[0]) == ft_strlen(key[0]))
+		if (!ft_strncmp(tmp[0], key[0], ft_strlen(key[0]))
+			&& ft_strlen(tmp[0]) == ft_strlen(key[0]))
 		{
 			free_split(tmp);
 			env->vars = ft_rmenv(env, i);
-			break;
+			break ;
 		}
 		free_split(tmp);
 	}
