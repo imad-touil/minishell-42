@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:30:18 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 15:26:31 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/21 01:49:28 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,34 @@ static char	**ft_addenv(t_env *env, char *arg, char *key)
 	return (env->vars);
 }
 
+static void	ft_zwaq(t_env *env)
+{
+	int	i;
+	int	j;
+	
+	i = -1;
+	while (env->vars[++i])
+	{
+		printf("declare -x ");
+		j = -1;
+		while (env->vars[i][++j])
+		{
+			printf("%c", env->vars[i][j]);
+			if (env->vars[i][j] == '=')
+				printf("\"");
+		}
+		printf("\"\n");
+	}
+}
+
 int	ft_export(t_command *cmds, t_env *env)
 {
 	int		i;
 	char	**tmp;
 	char	*key;
 
-	i = 0;
 	if (!cmds->args[1])
-	{
-		while (env->vars[++i])
-			printf("declare -x %s\n", env->vars[i]);
-	}
+		ft_zwaq(env);
 	i = 0;
 	while (cmds->args[++i])
 	{
@@ -72,5 +88,6 @@ int	ft_export(t_command *cmds, t_env *env)
 		else
 			env->vars = ft_addenv(env, cmds->args[i], key);
 	}
+	// free(tmp);
 	return (0);
 }

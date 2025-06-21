@@ -11,21 +11,21 @@ OBJS = $(SRCS:.c=.o)
 all: $(LIBFT) $(NAME)
 
 $(LIBFT):
-	$(MAKE) -C ./ft_libft
+	@$(MAKE) -C ./ft_libft
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINE_LIB) $(READLINE_INC) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINE_LIB) $(READLINE_INC) -o $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(READLINE_INC) -c $< -o $@
+	@$(CC) $(CFLAGS) $(READLINE_INC) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
-	$(MAKE) -C ./ft_libft clean
+	@rm -f $(OBJS)
+	@$(MAKE) -C ./ft_libft clean
 
 fclean: clean
-	rm -f $(NAME)
-	$(MAKE) -C ./ft_libft fclean
+	@rm -f $(NAME)
+	@$(MAKE) -C ./ft_libft fclean
 
 re: fclean all
 

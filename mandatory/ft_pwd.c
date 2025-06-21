@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:29:33 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/19 12:51:02 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:19:59 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,9 @@
 
 int	ft_pwd(t_env *env)
 {
-	char	*buffer;
 	char	*pwd;
-	
-	buffer = malloc(1024);
-	if (!buffer)
-	{
-		perror("error: ");
-		exit(1);
-	}
-	pwd = getcwd(buffer, 1024);
+
+	pwd = getcwd(NULL, 0);
 	if (pwd)
 	{
 		printf("%s\n", pwd);
@@ -34,6 +27,6 @@ int	ft_pwd(t_env *env)
 		env->exit_s = 1;
 		perror("pwd");
 	}
-	free(buffer);
+	free(pwd);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:25:38 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 12:35:40 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:03:00 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,8 @@ char	**ft_setenv(t_env *env, char *key, char *val)
 	while (env->vars[++i])
 		new_env[i] = ft_strdup(env->vars[i]);
 	new_env[i] = ft_strdup(key);
-	new_env[i] = ft_strjoin(new_env[i], "=\"");
+	new_env[i] = ft_strjoin(new_env[i], "=");
 	new_env[i] = ft_strjoin(new_env[i], val);
-	new_env[i] = ft_strjoin(new_env[i], "\"");
 	new_env[i + 1] = NULL;
 	env->vars = new_env;
 	return (env->vars);
