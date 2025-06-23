@@ -6,45 +6,44 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:30:18 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/21 13:07:46 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/23 01:08:14 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_valid_key(char *key)
+int	is_valid_key(char *key)
 {
 	int	i;
-	int	flag;
 
-	if (ft_isdigit(key[0]))
-		return (1);
+	if (!key || ft_isdigit(key[0]))
+		return (0);
 	i = -1;
-	flag = 1;
 	while (key[++i])
 	{
 		if (!ft_isalnum(key[i]) && key[i] != '_')
-			flag = 0;
+			return (0);
 	}
-	if (!flag)
-		return (1);
-	return (0);
+	return (1);
 }
 
 static int	is_it_in(t_env *env, char *key)
 {
-	int	i;
+	int		i;
+	size_t	len;
 
 	i = -1;
+	len = ft_strlen(key);
 	while (env->vars[++i])
 	{
-		if (!ft_strncmp(env->vars[i], key, ft_strlen(key)))
+		if (!ft_strncmp(env->vars[i], key, len)
+			&& env->vars[i][len] == '=')
 			return (i);
 	}
 	return (-1);
 }
 
-static char	**ft_addenv(t_env *env, char *arg, char *key)
+char	**ft_addenv(t_env *env, char *arg, char *key)
 {
 	int	i;
 	int	pos;
@@ -53,11 +52,12 @@ static char	**ft_addenv(t_env *env, char *arg, char *key)
 	pos = is_it_in(env, key);
 	if (pos != -1)
 	{
-		free(env->vars[pos] - ft_strlen(key) + 1);
+		free(env->vars[pos]);
 		env->vars[pos] = ft_strdup(arg);
 	}
 	else
 		env->vars = ft_setenv(env, key, arg + ft_strlen(key) + 1);
+	sort_env(env->vars);
 	return (env->vars);
 }
 
@@ -82,6 +82,8 @@ static void	ft_zwaq(t_env *env)
 				printf("\"");
 			}
 		}
+		if (flag)
+			printf("=\"");
 		printf("\"\n");
 	}
 }
@@ -93,13 +95,13 @@ int	ft_export(t_command *cmds, t_env *env)
 	char	*key;
 
 	if (!cmds->args[1])
-		ft_zwaq(env);
+		return (ft_zwaq(env), 0);
 	i = 0;
 	while (cmds->args[++i])
 	{
-		tmp = ft_split(cmds->args[i], '='); // TODO 
+		tmp = ft_split(cmds->args[i], '=');
 		key = tmp[0];
-		if (!tmp || !tmp[0] || cmds->args[i][0] == '=' || is_valid_key(tmp[0]))
+		if (!tmp || !tmp[0] || cmds->args[i][0] == '=' || !is_valid_key(tmp[0]))
 		{
 			ft_putstr_fd("minishell: not a valid identifier\n",
 				2);
@@ -107,6 +109,7 @@ int	ft_export(t_command *cmds, t_env *env)
 		}
 		else
 			env->vars = ft_addenv(env, cmds->args[i], key);
+		free_vars(tmp);
 	}
 	return (0);
 }

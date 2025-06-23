@@ -6,13 +6,13 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 17:31:00 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/19 11:38:45 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/22 18:18:46 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	free_split(char **arr)
+void	free_vars(char **arr)
 {
 	int i = 0;
 	if (!arr) return;
@@ -69,12 +69,12 @@ int	ft_unset(t_command *commands, t_env *env)
 		if (!ft_strncmp(tmp[0], key[0], ft_strlen(key[0])) &&
 			ft_strlen(tmp[0]) == ft_strlen(key[0]))
 		{
-			free_split(tmp);
+			free_vars(tmp);
 			env->vars = ft_rmenv(env, i);
 			break;
 		}
-		free_split(tmp);
+		free_vars(tmp);
 	}
-	free_split(key);
+	free_vars(key);
 	return (0);
 }

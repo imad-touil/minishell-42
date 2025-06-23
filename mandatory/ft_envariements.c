@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:25:30 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 14:25:31 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/22 20:08:46 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,32 @@
 
 #include "minishell.h"
 
-t_env	*init_env(char **envp)
+t_env    *init_env(char **envp)
 {
-	t_env	*env;
-	int		i;
-	int		count;
+    t_env    *env;
+    int        i;
+    int        j;
 
-	count = 0;
-	while (envp[count])
-		count++;
-	env = malloc(sizeof(t_env));
-	env->vars = malloc(sizeof(char *) * (count + 1));
-	i = 0;
-	while (i < count)
-	{
-		env->vars[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	env->vars[count] = NULL;
-	env->count = count;
-	env->exit_s = 0;
-	return (env);
+    i = 0;
+    while (envp[i])
+        i++;
+    env = malloc(sizeof(t_env));
+    env->vars = malloc(sizeof(char *) * (i + 1));
+    j = 0;
+    i = 0;
+    while (envp[i])
+    {
+        if (ft_strncmp(envp[i], "OLDPWD=", 7) != 0)
+        {
+            env->vars[j] = ft_strdup(envp[i]);
+            j++;
+        }
+        i++;
+    }
+    env->vars[j] = NULL;
+    env->count = j;
+    env->exit_s = 0;
+    return (env);
 }
 
 char	*ft_getenv(t_env *env, const char *key)

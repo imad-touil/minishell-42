@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 14:22:53 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/21 13:30:15 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/23 01:07:37 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ t_env		*init_env(char **envp);
 char		*ft_getenv(t_env *env, const char *key);
 
 /*          builts in functions  */
-# define	DEBUG "🐞 LOL\n" // Message for debuging 
 int			builts_in(t_command *commands, t_env *env);
 int			ft_echo(t_command *commands, t_env *env);
 int			ft_cd(t_command *commands, t_env *env);
@@ -104,6 +103,9 @@ int			ft_export(t_command *commands, t_env *env);
 int			ft_unset(t_command *commands, t_env *env);
 int			ft_env(t_command *commands, t_env *env);
 int			ft_exit(t_command *cmd);
+int			is_valid_key(char *key);
+char		**ft_addenv(t_env *env, char *arg, char *key);
+void		sort_env(char **env);
 
 char		**ft_setenv(t_env *env, char *key, char *val);
 
@@ -111,6 +113,7 @@ char		**ft_setenv(t_env *env, char *key, char *val);
 void		free_command(t_command *cmd);
 void		free_env(t_env *envs);
 void		free_redirections(t_redirection *redir);
+void		free_vars(char **arr);
 
 /*			SIGNALS			*/
 void		crtl_c(int sig);
