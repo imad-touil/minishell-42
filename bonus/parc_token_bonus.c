@@ -6,7 +6,7 @@
 /*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/17 18:23:20 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/17 22:41:16 by sael-kha         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:32:26 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ t_command	*mk_command(t_ms *head, t_command *prev)
 		return (NULL);
 	command = malloc(sizeof(t_command));
 	parc_args(head, command);
-	command->prev = prev;
-	command->next = NULL;
 	command->redirections = NULL;
-	command->or = NULL;
-	command->and = NULL;
+	command->prev = prev;
+	command->fd_in = dup(STDIN_FILENO);
+	command->fd_out = dup(STDOUT_FILENO);
+	command->is_builtin = is_builtin(command->name);
 	while (head->type >= TOKEN_WORD && head->type <= TOKEN_DQUOTE)
 	{
 		head = head->next;

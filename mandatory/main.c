@@ -6,7 +6,7 @@
 /*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/20 12:38:03 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/22 20:08:32 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/25 13:49:59 by imatouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // 	while(head)
 // 	{
 // 		printf("value: %s\ntype -> %d\nmergeble: %d\n",
-		// head->value, head->type, head->merg);
+// 			head->value, head->type, head->merg);
 // 		head = head->next;
 // 	}
 // }
@@ -25,7 +25,8 @@
 // void	print_red(t_redirection *red)
 // {
 // 	printf("\tredirection\t\n");
-// 	switch (red->type) {
+// 	switch (red->type)
+// 	{
 // 		case TOKEN_REDIR_IN:    printf("< (input)\n"); break;
 // 		case TOKEN_REDIR_OUT:   printf("> (output)\n"); break;
 // 		case TOKEN_APPEND:      printf(">> (append)\n"); break;
@@ -54,7 +55,12 @@
 // 		printf("args[%d] %s\n", i, com->args[i]);
 // 	if(com->redirections)
 // 		print_red(com->redirections);
+// 	printf("is_builtin : %d\n", com->is_builtin);
+// 	printf("fdin : %d\n", com->fd_in);
+// 	printf("fdout : %d\n", com->fd_out);
 // 	print_com(com->next, 0);
+// 	print_com(com->and, 1);
+// 	print_com(com->or, 2);
 // }
 
 int	main(int ac, char **av, char **env)
@@ -65,7 +71,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)av;
 	if (ac != 1)
-		return (printf("no need for args\n"), 1);
+		return (printf("no need for args lady\n"), 1);
 	setup_sig();
 	envs = init_env(env);
 	input = readline("minishell$ ");
@@ -78,6 +84,6 @@ int	main(int ac, char **av, char **env)
 		free(input);
 		input = readline("minishell$ ");
 	}
-	printf("exit\n");
+	printf("exit");
 	free_env(envs);
 }

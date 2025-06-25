@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_setenv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 12:25:38 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/23 01:09:54 by imatouil         ###   ########.fr       */
+/*   Updated: 2025/06/23 14:48:43 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	sort_env(char **env)
 		j = i + 1;
 		while (env[j])
 		{
-			if (ft_strncmp(env[i], env[j], ft_strlen(env[i]) + ft_strlen(env[j])) > 0)
+			if (ft_strncmp(env[i], env[j],
+					ft_strlen(env[i]) + ft_strlen(env[j])) > 0)
 			{
 				tmp = env[i];
 				env[i] = env[j];
@@ -47,8 +48,6 @@ void	sort_env(char **env)
 		i++;
 	}
 }
-
-
 
 char	**ft_setenv(t_env *env, char *key, char *val)
 {

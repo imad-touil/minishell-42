@@ -6,7 +6,7 @@
 /*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/23 14:44:40 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/17 22:41:12 by sael-kha         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:31:14 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ t_command	*token_input(char *input, t_env *env)
 		return (ft_free(head), env->exit_s = 2, NULL);
 	girv(head, env);
 	glue_tokens(head);
+	head = link_and_unlink(head);
 	com = mk_command(head, NULL);
 	ft_free(head);
 	return (com);

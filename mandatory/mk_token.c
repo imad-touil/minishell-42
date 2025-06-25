@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   mk_token.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 14:25:43 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 14:25:44 by imatouil         ###   ########.fr       */
+/*   Created: 2025/04/23 14:44:40 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/24 10:06:08 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -114,6 +112,7 @@ t_command	*token_input(char *input, t_env *env)
 		return (ft_free(head), env->exit_s = 2, NULL);
 	girv(head, env);
 	glue_tokens(head);
+	head = link_and_unlink(head);
 	com = mk_command(head, NULL);
 	ft_free(head);
 	return (com);

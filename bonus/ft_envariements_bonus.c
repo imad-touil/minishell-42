@@ -6,7 +6,7 @@
 /*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/02 15:02:14 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/17 22:41:29 by sael-kha         ###   ########.fr       */
+/*   Updated: 2025/06/23 19:31:38 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,26 @@ t_env	*init_env(char **envp)
 {
 	t_env	*env;
 	int		i;
-	int		count;
+	int		j;
 
-	count = 0;
-	while (envp[count])
-		count++;
-	env = malloc(sizeof(t_env));
-	env->vars = malloc(sizeof(char *) * (count + 1));
 	i = 0;
-	while (i < count)
+	while (envp[i])
+		i++;
+	env = malloc(sizeof(t_env));
+	env->vars = malloc(sizeof(char *) * (i + 1));
+	j = 0;
+	i = 0;
+	while (envp[i])
 	{
-		env->vars[i] = ft_strdup(envp[i]);
+		if (ft_strncmp(envp[i], "OLDPWD=", 7) != 0)
+		{
+			env->vars[j] = ft_strdup(envp[i]);
+			j++;
+		}
 		i++;
 	}
-	env->vars[count] = NULL;
-	env->count = count;
+	env->vars[j] = NULL;
+	env->count = j;
 	env->exit_s = 0;
 	return (env);
 }
@@ -42,7 +47,7 @@ char	*ft_getenv(t_env *env, const char *key)
 
 	key_len = ft_strlen(key);
 	i = 0;
-	while (i < env->count)
+	while (env->vars[i])
 	{
 		if (ft_strncmp(env->vars[i], key, key_len) == 0
 			&& env->vars[i][key_len] == '=')

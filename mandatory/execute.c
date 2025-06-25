@@ -3,31 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 14:24:24 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/21 13:22:35 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/02 19:42:12 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/23 19:40:37 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minishell.h"
 
-int setup_redirections(t_redirection *redirs)
+int	handle_heredoc(t_redirection *red)
+{
+	int		pipefd[2];
+	char	*line;
+
+	if (pipe(pipefd) == -1)
+		return (-1);
+	while (1)
+	{
+		line = readline("heredoc << ");
+		if (!line || !ft_strncmp(line, red->file, ft_strlen(line)))
+		{
+			free(line);
+			break ;
+		}
+		write(pipefd[1], line, ft_strlen(line));
+		write(pipefd[1], "\n", 1);
+		free(line);
+	}
+	close(pipefd[1]);
+	return (pipefd[0]);
+}
+
+int	set_red(t_redirection *redirs, int oldfd)
 {
 	int	fd;
 
 	while (redirs)
 	{
-
+		if (redirs->type == TOKEN_HEREDOC)
+			dup2(oldfd, STDIN_FILENO);
 		if (redirs->type == TOKEN_REDIR_IN)
 			fd = open(redirs->file, O_RDONLY);
 		else if (redirs->type == TOKEN_REDIR_OUT)
 			fd = open(redirs->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (redirs->type == TOKEN_APPEND)
 			fd = open(redirs->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		// else if (redirs->type == TOKEN_HEREDOC)
-		// 	fd = handle_heredoc(redirs->file);
+		else if (redirs->type == TOKEN_HEREDOC)
+			fd = handle_heredoc(redirs);
 		if (fd == -1)
 			return (perror("minishell"), 0);
 		if (redirs->type == TOKEN_REDIR_IN || redirs->type == TOKEN_HEREDOC)
@@ -45,7 +68,9 @@ void	free_paths(char **paths)
 	int	i;
 
 	i = 0;
-	while(paths[i])
+	if (!paths)
+		return ;
+	while (paths[i])
 	{
 		free(paths[i]);
 		i++;
@@ -53,7 +78,7 @@ void	free_paths(char **paths)
 	free(paths);
 }
 
-void	ft_exec(t_command	*commands,t_env *env)
+void	ft_exec(t_command	*commands, t_env *env)
 {
 	char	*com_path;
 	char	*path;
@@ -61,62 +86,53 @@ void	ft_exec(t_command	*commands,t_env *env)
 	char	*temp;
 	int		i;
 
-	if (commands->name[0] == '/' || commands->name[0] == '.')
-		if(execve(commands->name,commands->args,env->vars) == -1)
-			return (perror("minishell"));
+	khadem_program(commands, env);
 	path = ft_getenv(env, "PATH");
-	paths = ft_split(path,':');
-	i = 0;
-	while (paths[i])
+	paths = ft_split(path, ':');
+	i = -1;
+	while (path && paths[++i])
 	{
 		temp = ft_strjoin(paths[i], "/");
 		com_path = ft_strjoin(temp, commands->name);
 		free(temp);
-		if(access(com_path, X_OK) == 0)
+		if (access(com_path, X_OK) == 0)
 		{
-			reset_signals();
 			free_paths(paths);
-			if (execve(com_path,commands->args,env->vars) == -1)
-            	return (free(com_path), perror("minishell"));
+			if (execve(com_path, commands->args, env->vars) == -1)
+				return (free(com_path), perror("minishell"), exit(126));
 		}
 		free(com_path);
-		i++;
 	}
-	free_paths(paths);
-	ft_putstr_fd("minishell: command not found\n", STDERR_FILENO);
-}
-
-void	ft_wait(int *exit_s)
-{
-	int	status;
-
-	wait(&status);
-	if (WIFEXITED(status))
-		*exit_s = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		*exit_s = 128 + WTERMSIG(status);
+	return (ft_putstr_fd("minishell: command not found\n", STDERR_FILENO),
+		free_paths(paths), exit(127));
 }
 
 void	ft_executing(t_command *cmd, t_env *env)
 {
-	int	pid;
-
+	t_command	*current;
 
 	if (!cmd)
 		return ;
-	if (!builts_in(cmd, env))
-		return ;
-
-	if (!cmd)
-		return;
-
-	pid = fork();
-	if (pid == 0)
+	if (cmd->is_builtin == 1 && (!cmd->prev && !cmd->next))
+		builts_in(cmd, env, 1);
+	else
 	{
-		if (cmd->redirections && !setup_redirections(cmd->redirections))
-			exit(EXIT_FAILURE);
-		ft_exec(cmd, env);
-		exit(127);
-	}else
-		ft_wait(&env->exit_s);
+		current = cmd;
+		while (current)
+		{
+			if (current->next)
+				pipe(current->pipe);
+			current->pid = fork();
+			if (current->pid == 0)
+				child(current, env);
+			else
+			{
+				father(current);
+				current = current->next;
+			}
+		}
+		ft_wait(&env->exit_s, cmd);
+	}
 }
+
+// yes 'test' | head -n 1000 | wc -l

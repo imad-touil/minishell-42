@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parc_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 14:26:27 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 14:26:28 by imatouil         ###   ########.fr       */
+/*   Created: 2025/05/17 18:23:20 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/23 19:40:22 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -93,9 +91,11 @@ t_command	*mk_command(t_ms *head, t_command *prev)
 		return (NULL);
 	command = malloc(sizeof(t_command));
 	parc_args(head, command);
-	command->prev = prev;
-	command->next = NULL;
 	command->redirections = NULL;
+	command->prev = prev;
+	command->fd_in = dup(STDIN_FILENO);
+	command->fd_out = dup(STDOUT_FILENO);
+	command->is_builtin = is_builtin(command->name);
 	while (head->type >= TOKEN_WORD && head->type <= TOKEN_DQUOTE)
 	{
 		head = head->next;

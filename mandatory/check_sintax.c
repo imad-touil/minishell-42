@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   check_sintax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imatouil <imatouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/20 14:23:44 by imatouil          #+#    #+#             */
-/*   Updated: 2025/06/20 14:23:45 by imatouil         ###   ########.fr       */
+/*   Created: 2025/06/01 11:48:20 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/23 19:38:54 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
 
 #include "minishell.h"
 
@@ -67,7 +65,7 @@ int	check_sintax(t_ms *head)
 		head = head->next;
 	if (head && (head->type >= TOKEN_REDIR_IN && head->type <= TOKEN_HEREDOC))
 		return (check_red(head->next));
-	else if (head && head->type == TOKEN_PIPE)
+	else if (head && (head->type == TOKEN_PIPE))
 		return (check_sintax(head->next));
 	return (1);
 }

@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals_bonus.c                                    :+:      :+:    :+:   */
+/*   parc_token_tools_bonus.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sael-kha <sael-kha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 20:19:29 by sael-kha          #+#    #+#             */
-/*   Updated: 2025/06/23 19:32:32 by sael-kha         ###   ########.fr       */
+/*   Created: 2025/06/23 14:40:11 by sael-kha          #+#    #+#             */
+/*   Updated: 2025/06/25 11:29:18 by sael-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell_bonus.h"
 
-void	crtl_c(int sig)
+int	is_builtin(char *cmd)
 {
-	(void)sig;
-	kill(SIGCHLD, SIGINT);
-	waitpid(SIGCHLD, NULL, 0);
-	printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
-
-void	setup_sig(void)
-{
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, crtl_c);
-}
-
-void	reset_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGCHLD, SIG_DFL);
+	if (!cmd)
+		return (0);
+	if (ft_strncmp(cmd, "echo", 99) == 0)
+		return (2);
+	if (ft_strncmp(cmd, "cd", 99) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "pwd", 99) == 0)
+		return (2);
+	if (ft_strncmp(cmd, "export", 99) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "unset", 99) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "env", 99) == 0)
+		return (2);
+	if (ft_strncmp(cmd, "exit", 99) == 0)
+		return (1);
+	return (0);
 }
